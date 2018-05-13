@@ -1,0 +1,56 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  height: 100%;
+  grid-column: 2;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  height: 100%;
+}
+
+#favPlaces {
+  grid-column: 1;
+  background-color: white;
+  padding: 15px;
+}
+
+.marker-title {
+  text-align: center;
+  margin-left: 20px;
+  background-color: skyblue;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.place-info-box {
+  width: 330px;
+  height: 100%;
+}
+
+.place-info {
+  margin-left: 20px;
+}
+
+.place-category {
+  text-align: center;
+}
+
+#pano {
+  /* width: 330px;
+  height: 300px;
+  padding: 0;
+  margin: 0 auto; */
+}
+
+.place-img {
+  width: 310px;
+  height: auto;
+  margin-left: 20px;
+}
