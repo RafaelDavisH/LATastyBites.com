@@ -24,11 +24,11 @@ var ViewModel = function() {
     });
 
     // Style thye default marker
-    var defaultIcon = makeMarkerIcon('0091ff');
+    var defaultIcon = 'img/blue-marker.png';
 
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+    var highlightedIcon = 'img/green-marker.png';
 
     var largeInfowindow = new google.maps.InfoWindow({});
 
@@ -102,6 +102,8 @@ var ViewModel = function() {
   }
 
   function populateInfoWindow(marker, infowindow) {
+    var prefix, suffix, imgSrc, carouselDiv, carouselContent;
+
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
 
@@ -113,30 +115,99 @@ var ViewModel = function() {
         foursquare_client_id = "4HQ3Q5SF4YWOP4WB5RJF4DDLFBOJXMGZPIFRLZQTYGPEL4YJ"
         foursquare_client_secret = "0W3BR531UNN3A5U4GO4IEAY1BO2TXUS1MX3N3KTMPIRKH5XY"
 
-        console.log(marker.lat);
+
         // Foursquare API url
         var fqUrl = 'https://api.foursquare.com/v2/venues/search?client_id='+ foursquare_client_id +'&client_secret=' + foursquare_client_secret + '&v=20180512&ll=' + marker.lat + ',' + marker.lng + '&query=' + marker.title;
 
-        // Foursquare API
+        // Foursquare API - Pull the needed info from reponse
         $.getJSON(fqUrl).done(function(marker) {
           var response = marker.response.venues[0];
           self.street = response.location.formattedAddress[0];
           self.cityZip = response.location.formattedAddress[1]
           self.category = response.categories[0].shortName;
+          self.venueId = response.id;
+          console.log(self.venueId);
+
 
           self.fqHtmlContent =
-            '<h4 class="place-category">' + self.category + '</h4>' +
-            '<p class="place-info"><strong>Address:</strong></br> ' + self.street + ' ' + self.cityZip +
-            '</div>';
+            '<i class="fas fa-utensils fa-2x"></i><p class="place-category">' + self.category + '</p>' +
+            '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + self.cityZip + '</p><a href="#">' +
+            '<i class="fas fa-2x fa-images" ' +
+            'type="button" data-toggle="modal" data-target="#images"></i></a>' +
+            '<p class="pgImg">Pictures</p>';
 
           infowindow.setContent(self.setWindowContent + self.fqHtmlContent);
+
+
+          // Request for images for the selected Place using venue id.
+          var imgUrl = 'https://api.foursquare.com/v2/venues/' + self.venueId + '/photos?client_id=' + foursquare_client_id + '&client_secret=' + foursquare_client_secret + '&v=20180514';
+
+
+          $.getJSON(imgUrl, function(result) {
+            var imgResult = result.response.photos.count;
+            if (imgResult == 0){
+              document.getElementById('carousel').innerHTML =
+              '<div class="carousel-item active">' +
+              '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+            } else {
+              for (var i = 0;i < 10; i++){
+                var imagesCount = result.response.photos.items;
+                prefix = result.response.photos.items;
+                suffix = result.response.photos.items;
+
+                document.getElementById('carousel').innerHTML =
+                '<div class="carousel-item active" >' +
+                '<img class="d-block w-100" src="'+
+                prefix[i].prefix + "300x300" + suffix[i].suffix +'"'+
+                'alt="First slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 1].prefix + "300x300" + suffix[i + 1].suffix +'"'+
+                'alt="Second slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 2].prefix + "300x300" + suffix[i + 2].suffix +'"'+
+                'alt="Third slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 3].prefix + "300x300" + suffix[i + 3].suffix +'"'+
+                'alt="Fourth slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 4].prefix + "300x300" + suffix[i + 4].suffix +'"'+
+                'alt="Fifth slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 5].prefix + "300x300" + suffix[i + 5].suffix +'"'+
+                'alt="Sixth slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 6].prefix + "300x300" + suffix[i + 6].suffix +'"'+
+                'alt="Seventh slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 7].prefix + "300x300" + suffix[i + 7].suffix +'"'+
+                'alt="Eighth slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 8].prefix + "300x300" + suffix[i + 8].suffix +'"'+
+                'alt="Nineth slide">' + '</div>' +
+                '<div class="carousel-item">' +
+                '<img class="d-block w-100" src="'+
+                prefix[i + 9].prefix + "300x300" + suffix[i + 9].suffix +'"'+
+                'alt="Tenth slide">' + '</div>';
+              }
+
+            }
+          });
+
         }).fail(function() {
             alert("Please reload the page, there seems to be a problem when loading the content.");
         });
 
         // set the content to display in the infowindow
         self.setWindowContent =
-          '<div class="place-info-box"><h2 class="marker-title">' + marker.title + '</h2>' + '<img class="place-img" src="' + marker.imgSrc + '">';
+          '<div class="place-info-box"><p class="marker-title">' + marker.title + '</p>';
 
         infowindow.open(map, marker);
 
