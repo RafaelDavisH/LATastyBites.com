@@ -140,12 +140,17 @@ html, body {
   font-size: 1.2em;
 }
 
+
+.img-link {
+  text-decoration: none;
+}
+
 .fa-images,
 .fa-location-arrow,
 .fa-utensils {
-  margin-top: -5px;
+  margin-top: -9px;
   color: #f93c3c;
-  padding-left: 10px;
+  margin-left: 10px;
 }
 
 .fa-location-arrow{

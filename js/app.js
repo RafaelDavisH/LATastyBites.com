@@ -176,7 +176,7 @@ var ViewModel = function() {
 
           self.fqHtmlContent =
             '<i class="fas fa-utensils fa-2x"></i><p class="place-category">' + self.category + '</p>' +
-            '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + self.cityZip + '</p><a href="#">' +
+            '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + self.cityZip + '</p><a class="img-link" href="#">' +
             '<i class="fas fa-2x fa-images" ' +
             'type="button" data-toggle="modal" data-target="#images"></i></a>' +
             '<p class="pgImg">Pictures</p>';
