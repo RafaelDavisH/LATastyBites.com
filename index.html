@@ -23,7 +23,7 @@
         <input type="search text-center" class="inputFilter" data-bind="textInput: searchInput, valueUpdate: afterkeydown" />
 
         <ul class="listed-place" data-bind="foreach: favPlacesFilter">
-          <li  class="place" data-bind="text: title, event: {mouseover: $parent.logMouseOver, mouseout: $parent.offMouseOver}"></li>
+          <li  class="place" data-bind="text: title, event: {mouseover: $parent.logMouseOver, mouseout: $parent.offMouseOver}, click: $parent.selectedPlace"></li>
         </ul>
 
       </div>

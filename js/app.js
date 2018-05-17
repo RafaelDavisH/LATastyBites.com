@@ -6,7 +6,6 @@ var ViewModel = function() {
   var self = this;
 
   // Passing current place as a parameter
-  // self.selectedPlace = ko.observable();
   self.places = ko.observableArray(favPlaces);
 
   this.searchInput = ko.observable("");
@@ -83,6 +82,14 @@ var ViewModel = function() {
         setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 700);
+      }
+
+      self.selectedPlace = function() {
+        populateInfoWindow(this, largeInfowindow);
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout((function() {
+          this.setAnimation(null);
+        }).bind(this), 1400);
       }
 
       self.offMouseOver = function(){
@@ -176,7 +183,8 @@ var ViewModel = function() {
 
           self.fqHtmlContent =
             '<i class="fas fa-utensils fa-2x"></i><p class="place-category">' + self.category + '</p>' +
-            '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + self.cityZip + '</p><a class="img-link" href="#">' +
+            '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + " " + self.cityZip +
+            '</p><a class="img-link" href="#">' +
             '<i class="fas fa-2x fa-images" ' +
             'data-toggle="modal" data-target="#images"></i></a>' +
             '<p class="pgImg">Pictures</p>';

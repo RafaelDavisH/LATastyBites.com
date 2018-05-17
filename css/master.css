@@ -162,6 +162,7 @@ html, body {
 .place-info {
   grid-column: 2;
   grid-row: 4;
+  line-height: inherit;
 }
 
 .fa-utensils{
