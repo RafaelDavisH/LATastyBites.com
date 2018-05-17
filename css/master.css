@@ -142,8 +142,9 @@ html, body {
 
 
 .img-link {
-  text-decoration: none;
+  text-decoration: none !important;
 }
+
 
 .fa-images,
 .fa-location-arrow,
