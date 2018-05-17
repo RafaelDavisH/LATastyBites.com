@@ -1,5 +1,5 @@
-
-var map, marker;
+// Global variable
+var map;
 
 
 var ViewModel = function() {
@@ -9,7 +9,7 @@ var ViewModel = function() {
   // self.selectedPlace = ko.observable();
   self.places = ko.observableArray(favPlaces);
 
-
+  this.searchInput = ko.observable("");
 
   // Google map initialize
   this.markers = [];
@@ -23,11 +23,11 @@ var ViewModel = function() {
       mapTypeControl: false
     });
 
-    // Style thye default marker
+    // Replace the default marker with a png marker.
     var defaultIcon = 'img/blue-marker.png';
 
-    // Create a "highlighted location" marker color for when the user
-    // mouses over the marker.
+    // Replace with a png marker as "highlighted location" for when the user
+    // mouseover the marker.
     var highlightedIcon = 'img/green-marker.png';
 
     var largeInfowindow = new google.maps.InfoWindow({});
@@ -54,18 +54,41 @@ var ViewModel = function() {
       this.markers.push(this.marker);
 
       // Event listeners = mouseover and mouseout
-      // to change the colors back and forth.
+      // to change the colors back and forth of markers.
       this.marker.addListener('mouseover', function() {
         this.setIcon(highlightedIcon);
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout((function() {
+          this.setAnimation(null);
+        }).bind(this), 700);
       });
       this.marker.addListener('mouseout', function() {
         this.setIcon(defaultIcon);
       });
 
-      // Create an onClick event to open the large infowindow at each marker.
+      // Create an onClick event to open the large infowindow and bounce the marker.
       this.marker.addListener('click', function() {
         populateInfoWindow(this, largeInfowindow);
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout((function() {
+          this.setAnimation(null);
+        }).bind(this), 1400);
       });
+
+      //Mouseover: highlightes the listed place and marker.
+      self.logMouseOver = function() {
+        var place = document.getElementsByClassName('place');
+        this.setIcon(highlightedIcon);
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout((function() {
+          this.setAnimation(null);
+        }).bind(this), 700);
+      }
+
+      self.offMouseOver = function(){
+        place = document.getElementsByClassName('place');
+        this.setIcon(defaultIcon);
+      }
 
     }
     showPlaces();
@@ -74,8 +97,7 @@ var ViewModel = function() {
 
 
   // This function takes in a COLOR, and then creates a new markers
-  // icon of that color. The icon will be 21 px wide by 34 high, have an origin.
-  // of 0, 0 and anchored at 10, 34).
+  // icon of that color.
   function makeMarkerIcon(markerColor) {
     var markerImage = new google.maps.MarkerImage(
       'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' +
@@ -87,7 +109,13 @@ var ViewModel = function() {
       new google.maps.Size(25, 44));
     return markerImage;
   }
-  // this.makeMarkerIcon();
+
+  // This function will loop through the markers and hide them all when any of the listed places its click
+  self.removePlace = function(place) {
+    for (var i = 0; i < self.markers.length; i++){
+      self.markers[i].setMap(null);
+    }
+  }
 
 
   // This function will loop through the markers array and display them all.
@@ -101,6 +129,25 @@ var ViewModel = function() {
     map.fitBounds(bounds);
   }
 
+  // Input filter to display live only the place listed and marker that its
+  // searched.
+  this.favPlacesFilter = ko.computed(function() {
+    var list = [];
+    for (var i = 0; i < self.markers.length; i++) {
+      var markerPlace = self.markers[i];
+      if (markerPlace.title.toLowerCase().includes(this.searchInput()
+            .toLowerCase())) {
+        list.push(markerPlace);
+        self.markers[i].setVisible(true);
+      } else {
+        self.markers[i].setVisible(false);
+      }
+    }
+    return list;
+  }, this);
+
+
+  // Markers InfoWindow Content
   function populateInfoWindow(marker, infowindow) {
     var prefix, suffix, imgSrc, carouselDiv, carouselContent;
 
@@ -126,8 +173,6 @@ var ViewModel = function() {
           self.cityZip = response.location.formattedAddress[1]
           self.category = response.categories[0].shortName;
           self.venueId = response.id;
-          console.log(self.venueId);
-
 
           self.fqHtmlContent =
             '<i class="fas fa-utensils fa-2x"></i><p class="place-category">' + self.category + '</p>' +
@@ -219,10 +264,25 @@ var ViewModel = function() {
   };
 
 }
+
 // Google Error function
 googleErrorHandler = function googleError() {
   alert('There seeem to be a issue with Google Map loading. Sorry for the inconvenience.');
 };
+
+// function for sidenav open and close animation with screen matching
+var screen = window.matchMedia("(max-width: 500px)");
+function openNav() {
+  if (screen.matches ) {
+    document.getElementById('favPlaces').style.width = "100%";
+  } else {
+    document.getElementById('favPlaces').style.width = "350px";
+  }
+}
+
+function closeNav() {
+  document.getElementById('favPlaces').style.width = "0";
+}
 
 // Run app
 function runApp() {

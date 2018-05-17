@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood Map</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
@@ -11,15 +12,26 @@
   </head>
   <body>
     <div class="container-grid">
-      <div id="favPlaces">
-        <h4>My Favorite Places in Art Distric CA</h4>
+      <div id="favPlaces" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <p class="text-center">MY FAVORITES</p>
+        <h4 class="site-title display-4">Food Spots</h4>
+        <p class="small-text text-center">IN LA</p>
+        <hr/>
+        <br/>
+        <p class="text-center">Search Filter</p>
+        <input type="search text-center" class="inputFilter" data-bind="textInput: searchInput, valueUpdate: afterkeydown" />
 
-        <ul class="listed-place" data-bind="foreach: places">
-          <li  data-bind="text: title"></li>
+        <ul class="listed-place" data-bind="foreach: favPlacesFilter">
+          <li  class="place" data-bind="text: title, event: {mouseover: $parent.logMouseOver, mouseout: $parent.offMouseOver}"></li>
         </ul>
 
       </div>
-      <div id="map"></div>
+      <div class="nav-bar">
+        <span class="nav-icon" onclick="openNav()">&#9776;</span>
+      </div>
+      <div id="map">
+      </div>
       <div class="modal fade" id="images" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
