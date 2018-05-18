@@ -117,14 +117,6 @@ var ViewModel = function() {
     return markerImage;
   }
 
-  // This function will loop through the markers and hide them all when any of the listed places its click
-  self.removePlace = function(place) {
-    for (var i = 0; i < self.markers.length; i++){
-      self.markers[i].setMap(null);
-    }
-  }
-
-
   // This function will loop through the markers array and display them all.
   function showPlaces() {
     var bounds = new google.maps.LatLngBounds();
