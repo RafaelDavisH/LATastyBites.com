@@ -148,7 +148,6 @@ var ViewModel = function() {
 
   // Markers InfoWindow Content
   function populateInfoWindow(marker, infowindow) {
-    var prefix, suffix, imgSrc, carouselDiv, carouselContent;
 
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
@@ -189,6 +188,7 @@ var ViewModel = function() {
 
 
           $.getJSON(imgUrl, function(result) {
+            var imgSrc = [];
             var imgResult = result.response.photos.count;
             if (imgResult == 0){
               document.getElementById('carousel').innerHTML =
@@ -196,50 +196,48 @@ var ViewModel = function() {
               '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
             } else {
               for (var i = 0;i < 10; i++){
-                var imagesCount = result.response.photos.items;
-                prefix = result.response.photos.items;
-                suffix = result.response.photos.items;
+                var preSu = result.response.photos.items;
 
                 document.getElementById('carousel').innerHTML =
                 '<div class="carousel-item active" >' +
                 '<img class="d-block w-100" src="'+
-                prefix[i].prefix + "300x300" + suffix[i].suffix +'"'+
+                preSu[i].prefix + "300x300" + preSu[i].suffix +'"'+
                 'alt="First slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 1].prefix + "300x300" + suffix[i + 1].suffix +'"'+
+                preSu[i + 1].prefix + "300x300" + preSu[i + 1].suffix +'"'+
                 'alt="Second slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 2].prefix + "300x300" + suffix[i + 2].suffix +'"'+
+                preSu[i + 2].prefix + "300x300" + preSu[i + 2].suffix +'"'+
                 'alt="Third slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 3].prefix + "300x300" + suffix[i + 3].suffix +'"'+
+                preSu[i + 3].prefix + "300x300" + preSu[i + 3].suffix +'"'+
                 'alt="Fourth slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 4].prefix + "300x300" + suffix[i + 4].suffix +'"'+
+                preSu[i + 4].prefix + "300x300" + preSu[i + 4].suffix +'"'+
                 'alt="Fifth slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 5].prefix + "300x300" + suffix[i + 5].suffix +'"'+
+                preSu[i + 5].prefix + "300x300" + preSu[i + 5].suffix +'"'+
                 'alt="Sixth slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 6].prefix + "300x300" + suffix[i + 6].suffix +'"'+
+                preSu[i + 6].prefix + "300x300" + preSu[i + 6].suffix +'"'+
                 'alt="Seventh slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 7].prefix + "300x300" + suffix[i + 7].suffix +'"'+
+                preSu[i + 7].prefix + "300x300" + preSu[i + 7].suffix +'"'+
                 'alt="Eighth slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 8].prefix + "300x300" + suffix[i + 8].suffix +'"'+
+                preSu[i + 8].prefix + "300x300" + preSu[i + 8].suffix +'"'+
                 'alt="Nineth slide">' + '</div>' +
                 '<div class="carousel-item">' +
                 '<img class="d-block w-100" src="'+
-                prefix[i + 9].prefix + "300x300" + suffix[i + 9].suffix +'"'+
+                preSu[i + 9].prefix + "300x300" + preSu[i + 9].suffix +'"'+
                 'alt="Tenth slide">' + '</div>';
               }
 

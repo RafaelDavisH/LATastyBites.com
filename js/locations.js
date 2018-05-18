@@ -20,16 +20,12 @@ var favPlaces = [
   imgSrc: 'img/hook-burger.png'},
   {title: 'Shake Shack', location: {lat: 34.142795, lng:-118.254761},
   imgSrc: 'img/shake-shack.png'},
-  {title: 'Madre!', location: {lat: 33.835440, lng: -118.314807},
-  imgSrc: 'img/madre.png'},
   {title: 'Mr. Holmes Bakehouse', location: {lat: 34.110227, lng: -118.190510},
   imgSrc: 'img/mr-holmes.png'},
   {title: 'Donut Friend', location: {lat: 34.121253, lng: -118.204409},
   imgSrc: 'img/donut-friend.png'},
   {title: 'The India Restaurant', location: {lat: 33.868764, lng: -118.081770},
   imgSrc: 'img/the-india.png'},
-  {title: 'Labels Table Deli', location: {lat: 34.055100, lng: -118.392647},
-  imgSrc: 'img/labels-table.png'},
   {title: 'DeSano Pizza Bakery', location: {lat: 34.091135, lng:-118.297763},
   imgSrc: 'img/desano-pizza.png'}
 ];
