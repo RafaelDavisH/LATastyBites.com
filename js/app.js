@@ -76,13 +76,12 @@ var ViewModel = function() {
 
       //Mouseover: highlightes the listed place and marker.
       self.logMouseOver = function() {
-        var place = document.getElementsByClassName('place');
         this.setIcon(highlightedIcon);
         this.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 700);
-      }
+      };
 
       self.selectedPlace = function() {
         populateInfoWindow(this, largeInfowindow);
@@ -90,12 +89,11 @@ var ViewModel = function() {
         setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 1400);
-      }
+      };
 
       self.offMouseOver = function(){
-        place = document.getElementsByClassName('place');
         this.setIcon(defaultIcon);
-      }
+      };
 
     }
     showPlaces();
@@ -157,8 +155,8 @@ var ViewModel = function() {
         infowindow.marker = marker;
 
         // foursquare API client
-        foursquare_client_id = "4HQ3Q5SF4YWOP4WB5RJF4DDLFBOJXMGZPIFRLZQTYGPEL4YJ"
-        foursquare_client_secret = "0W3BR531UNN3A5U4GO4IEAY1BO2TXUS1MX3N3KTMPIRKH5XY"
+        foursquare_client_id = "4HQ3Q5SF4YWOP4WB5RJF4DDLFBOJXMGZPIFRLZQTYGPEL4YJ";
+        foursquare_client_secret = "0W3BR531UNN3A5U4GO4IEAY1BO2TXUS1MX3N3KTMPIRKH5XY";
 
 
         // Foursquare API url
@@ -168,7 +166,7 @@ var ViewModel = function() {
         $.getJSON(fqUrl).done(function(marker) {
           var response = marker.response.venues[0];
           self.street = response.location.formattedAddress[0];
-          self.cityZip = response.location.formattedAddress[1]
+          self.cityZip = response.location.formattedAddress[1];
           self.category = response.categories[0].shortName;
           self.venueId = response.id;
 
@@ -188,59 +186,29 @@ var ViewModel = function() {
 
 
           $.getJSON(imgUrl, function(result) {
-            var imgSrc = [];
             var imgResult = result.response.photos.count;
-            if (imgResult == 0){
+            if (imgResult === 0){
               document.getElementById('carousel').innerHTML =
               '<div class="carousel-item active">' +
               '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
             } else {
-              for (var i = 0;i < 10; i++){
-                var preSu = result.response.photos.items;
+              var preSu = result.response.photos.items;
 
-                document.getElementById('carousel').innerHTML =
+              self.carouselImages =
                 '<div class="carousel-item active" >' +
                 '<img class="d-block w-100" src="'+
-                preSu[i].prefix + "300x300" + preSu[i].suffix +'"'+
-                'alt="First slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 1].prefix + "300x300" + preSu[i + 1].suffix +'"'+
-                'alt="Second slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 2].prefix + "300x300" + preSu[i + 2].suffix +'"'+
-                'alt="Third slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 3].prefix + "300x300" + preSu[i + 3].suffix +'"'+
-                'alt="Fourth slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 4].prefix + "300x300" + preSu[i + 4].suffix +'"'+
-                'alt="Fifth slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 5].prefix + "300x300" + preSu[i + 5].suffix +'"'+
-                'alt="Sixth slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 6].prefix + "300x300" + preSu[i + 6].suffix +'"'+
-                'alt="Seventh slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 7].prefix + "300x300" + preSu[i + 7].suffix +'"'+
-                'alt="Eighth slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 8].prefix + "300x300" + preSu[i + 8].suffix +'"'+
-                'alt="Nineth slide">' + '</div>' +
-                '<div class="carousel-item">' +
-                '<img class="d-block w-100" src="'+
-                preSu[i + 9].prefix + "300x300" + preSu[i + 9].suffix +'"'+
-                'alt="Tenth slide">' + '</div>';
-              }
+                preSu[0].prefix + "300x300" + preSu[0].suffix +'"'+
+                'alt="First slide">' + '</div>';
 
+              for (var i = 0;i < imgResult; i++){
+
+                self.carouselImages +=
+                  '<div class="carousel-item">' +
+                  '<img class="d-block w-100" src="'+
+                  preSu[++i].prefix + "300x300" + preSu[++i].suffix +'"'+
+                  'alt="Second slide">' + '</div>';
+              }
+              document.getElementById('carousel').innerHTML = self.carouselImages;
             }
           });
 
@@ -259,14 +227,14 @@ var ViewModel = function() {
           infowindow.marker = null;
         });
     }
-  };
+  }
 
-}
+};
 
 // Google Error function
-googleErrorHandler = function googleError() {
+function googleError() {
   alert('There seeem to be a issue with Google Map loading. Sorry for the inconvenience.');
-};
+}
 
 // function for sidenav open and close animation with screen matching
 var screen = window.matchMedia("(max-width: 500px)");

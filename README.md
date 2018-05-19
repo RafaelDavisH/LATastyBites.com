@@ -1,7 +1,11 @@
 # Neighborhood Map
 >Single-page application featuring a map with my favorite food spots in Los Angeles, CA. Using google API to load markers with latitude and longitude, animated with BOUNCE and DROP for better user experience. Markers display basic information of each spot using Google's infowindow functionality and populated with data from the locations.js file and Foursquare API.
 
-*This single-page application is ready to be use out-of-the-box. If you wish to use it all it needs to be modified is the `locations.js` file where name, location (latitude and longitude), and a fallback image for each of the locations is needed.*
+
+##### Instructions to use this Repo.
+*This single-page application is ready to be use out-of-the-box.*
+- Modified `locations.js` file by adding name, location (latitude and longitude), and a fallback image for each of the locations needed.
+- Open the index.html on your browser and done.
 
 #### Clone-it -> Modify-it -> Publish-it
 
