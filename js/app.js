@@ -8,9 +8,7 @@ var ViewModel = function() {
   // Passing current place as a parameter
   self.places = ko.observableArray(favPlaces);
 
-  self.foursquarePhotos = ko.observableArray();
-
-
+  
   this.searchInput = ko.observable("");
 
   // Google map initialize
