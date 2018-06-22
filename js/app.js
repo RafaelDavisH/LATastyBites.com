@@ -8,6 +8,9 @@ var ViewModel = function() {
   // Passing current place as a parameter
   self.places = ko.observableArray(favPlaces);
 
+  self.foursquarePhotos = ko.observableArray();
+
+
   this.searchInput = ko.observable("");
 
   // Google map initialize
@@ -74,7 +77,7 @@ var ViewModel = function() {
         }).bind(this), 1400);
       });
 
-      //Mouseover: highlightes the listed place and marker.
+      //Mouseover: highlights the listed place and marker.
       self.logMouseOver = function() {
         this.setIcon(highlightedIcon);
         this.setAnimation(google.maps.Animation.BOUNCE);
@@ -165,9 +168,9 @@ var ViewModel = function() {
         // Foursquare API - Pull the needed info from reponse
         $.getJSON(fqUrl).done(function(marker) {
           var response = marker.response.venues[0];
-          self.street = response.location.formattedAddress[0];
-          self.cityZip = response.location.formattedAddress[1];
-          self.category = response.categories[0].shortName;
+          self.street = response.location.formattedAddress[0] || "No street available";
+          self.cityZip = response.location.formattedAddress[1] || "No zip code available";
+          self.category = response.categories[0].shortName || "No category available";
           self.venueId = response.id;
 
           self.fqHtmlContent =
@@ -184,31 +187,22 @@ var ViewModel = function() {
           // Request for images for the selected Place using venue id.
           var imgUrl = 'https://api.foursquare.com/v2/venues/' + self.venueId + '/photos?client_id=' + foursquare_client_id + '&client_secret=' + foursquare_client_secret + '&v=20180514';
 
-
           $.getJSON(imgUrl, function(result) {
             var imgResult = result.response.photos.count;
             if (imgResult === 0){
-              document.getElementById('carousel').innerHTML =
-              '<div class="carousel-item active">' +
-              '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+
+                for (var i = 0; i < imgResult; i++) {
+                  var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+                document.getElementById('carousel').innerHTML = photos;
+                }
+
             } else {
               var preSu = result.response.photos.items;
-
-              self.carouselImages =
-                '<div class="carousel-item active" >' +
-                '<img class="d-block w-100" src="'+
-                preSu[0].prefix + "300x300" + preSu[0].suffix +'"'+
-                'alt="First slide">' + '</div>';
-
-              for (var i = 0;i < imgResult; i++){
-
-                self.carouselImages +=
-                  '<div class="carousel-item">' +
-                  '<img class="d-block w-100" src="'+
-                  preSu[++i].prefix + "300x300" + preSu[++i].suffix +'"'+
-                  'alt="Second slide">' + '</div>';
-              }
-              document.getElementById('carousel').innerHTML = self.carouselImages;
+              var placePhotos = '<div class="carousel-item active" >'+
+              '<img class="d-block w-100" src="'+
+              preSu[0].prefix + "300x300" + preSu[0].suffix +'"'+
+              'alt="First slide">' + '</div>';
+              document.getElementById('carousel').innerHTML = placePhotos;
             }
           });
 
@@ -237,9 +231,9 @@ function googleError() {
 }
 
 // function for sidenav open and close animation with screen matching
-var screen = window.matchMedia("(max-width: 500px)");
+var viewWindow = window.matchMedia("(max-width: 500px)");
 function openNav() {
-  if (screen.matches ) {
+  if (viewWindow.matches ) {
     document.getElementById('favPlaces').style.width = "100%";
   } else {
     document.getElementById('favPlaces').style.width = "350px";
