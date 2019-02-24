@@ -183,39 +183,67 @@ var ViewModel = function() {
           self.cityZip = response.location.formattedAddress[1] || "No zip code available";
           self.category = response.categories[0].shortName || "No category available";
           self.venueId = response.id;
+          self.name = response.name;
 
           self.fqHtmlContent =
             '<i class="fas fa-utensils fa-2x"></i><p class="place-category">' + self.category + '</p>' +
             '<i class="fas fa-location-arrow fa-2x"></i><p class="place-info">' + self.street + " " + self.cityZip +
             '</p><a class="img-link" href="#">' +
-            '<i class="fas fa-2x fa-images" ' +
+            '<i class="fas fa-2x fa-images" id="photo"' +
             'data-toggle="modal" data-target="#images"></i></a>' +
             '<p class="pgImg">Pictures</p>';
 
           infowindow.setContent(self.setWindowContent + self.fqHtmlContent);
+          document.getElementById('photo').addEventListener('click', showPhoto);
+          function showPhoto() {
+            for(var i = 0; i < self.markers.length; i++){
+              var title = self.markers[i].title;
+              this.photo = self.markers[i].imgSrc;
+
+              if(title === self.name ) {
+                var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ this.photo +'"'+ 'alt="First slide">' + '</div>';
+                document.getElementById('carousel').innerHTML = photos;
+                break
+              } else {
+                console.log(self.markers[i].title, self.name);
+              }
+              console.log(self.name);
+            }
+
+            // if(self.marker.title === self.name ) {
+            //   var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+            //   document.getElementById('carousel').innerHTML = photos;
+            // } else {
+            //   console.log('error');
+            // }
+
+          }
 
 
           // Request for images for the selected Place using venue id.
-          var imgUrl = 'https://api.foursquare.com/v2/venues/' + self.venueId + '/photos?client_id=' + foursquare_client_id + '&client_secret=' + foursquare_client_secret + '&v=20180514';
+          // var imgUrl = 'https://api.foursquare.com/v2/venues/' + self.venueId + '/photos?client_id=' + foursquare_client_id + '&client_secret=' + foursquare_client_secret + '&v=20180514';
 
-          $.getJSON(imgUrl, function(result) {
-            var imgResult = result.response.photos.count;
-            if (imgResult === 0){
+          // $.getJSON(imgUrl, function(result) {
+          //   var imgResult = result.response.photos.count;
+          //   if (preSu){
 
-                for (var i = 0; i < imgResult; i++) {
-                  var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
-                document.getElementById('carousel').innerHTML = photos;
-                }
+          //     for (var i = 0; i < imgResult; i++) {
+          //       var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+          //     document.getElementById('carousel').innerHTML = photos;
+          //     }
 
-            } else {
-              var preSu = result.response.photos.items;
-              var placePhotos = '<div class="carousel-item active" >'+
-              '<img class="d-block w-100" src="'+
-              preSu[0].prefix + "300x300" + preSu[0].suffix +'"'+
-              'alt="First slide">' + '</div>';
-              document.getElementById('carousel').innerHTML = placePhotos;
-            }
-          });
+          //   } else {
+          //     var preSu = result.response.photos.items;
+          //     var placePhotos = '<div class="carousel-item active" >'+
+          //     '<img class="d-block w-100" src="'+
+          //     preSu[0].prefix + "300x300" + preSu[0].suffix +'"'+
+          //     'alt="First slide">' + '</div>';
+          //     document.getElementById('carousel').innerHTML = placePhotos;
+          //   }
+          // });
+          // var photos = '<div class="carousel-item active">' + '<img class="d-block w-100" src="'+ self.marker.imgSrc +'"'+ 'alt="First slide">' + '</div>';
+          // document.getElementById('carousel').innerHTML = photos;
+
 
         }).fail(function() {
             alert("Please reload the page, there seems to be a problem when loading the content.");
