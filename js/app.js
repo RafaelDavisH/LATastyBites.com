@@ -66,13 +66,18 @@ var ViewModel = function() {
         this.setIcon(defaultIcon);
       });
 
+      // Markers
       // Create an onClick event to open the large infowindow and bounce the marker.
+      // pan To and zoom to marker clicked
       this.marker.addListener('click', function() {
         populateInfoWindow(this, largeInfowindow);
         this.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 1400);
+        centerToMarker = {lat: this.lat, lng: this.lng };
+        map.setZoom(14);
+        map.panTo(centerToMarker);
       });
 
       //Mouseover: highlights the listed place and marker.
@@ -84,6 +89,10 @@ var ViewModel = function() {
         }).bind(this), 700);
       };
 
+      
+      // sidebar: list of places
+      // Populate marker infowindow, add bounce animation,
+      // close navbar (specially for mobile), pan to and zoom to listed place selected
       self.selectedPlace = function() {
         populateInfoWindow(this, largeInfowindow);
         this.setAnimation(google.maps.Animation.BOUNCE);
@@ -92,6 +101,7 @@ var ViewModel = function() {
         }).bind(this), 1400);
         closeNav();
         centerToMarker = {lat: this.lat, lng: this.lng };
+        map.setZoom(14);
         map.panTo(centerToMarker);
       };
 
