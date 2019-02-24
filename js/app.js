@@ -90,6 +90,9 @@ var ViewModel = function() {
         setTimeout((function() {
           this.setAnimation(null);
         }).bind(this), 1400);
+        closeNav();
+        centerToMarker = {lat: this.lat, lng: this.lng };
+        map.panTo(centerToMarker);
       };
 
       self.offMouseOver = function(){
